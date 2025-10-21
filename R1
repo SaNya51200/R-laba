@@ -1,0 +1,35 @@
+get_square_area <- function(side) {
+  return(side ^ 2)
+}
+
+get_rectangle_area <- function(width, height) {
+  area <- width * height
+  return(area)
+}
+
+get_circle_area <- function(radius) {
+  area <- pi * (radius ^ 2)
+  return(area)
+}
+
+cat("Введите сторону квадрата:\n")
+side_square <- as.numeric(readline())
+
+cat("Введите две стороны прямоугольника (через пробел):\n")
+rect_input <- scan(what = numeric(), quiet = TRUE, nmax = 2)
+rect_a <- rect_input[1]
+rect_b <- rect_input[2]
+
+cat("Введите радиус круга:\n")
+radius_circle <- as.numeric(readline())
+
+square_area <- get_square_area(side_square)
+rectangle_area <- get_rectangle_area(rect_a, rect_b)
+circle_area <- get_circle_area(radius_circle)
+
+total_area <- sum(square_area, rectangle_area, circle_area)
+
+cat("Площадь квадрата =", square_area, "\n")
+cat("Площадь прямоугольника =", rectangle_area, "\n")
+cat("Площадь круга =", circle_area, "\n")
+cat("Общая площадь всех фигур =", total_area, "\n")

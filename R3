@@ -1,0 +1,28 @@
+findS <- function(x) {
+  UseMethod("findS", x)
+}
+
+findS.default <- function(x) {
+  warning("Неизвестный тип фигуры")
+  return(NA)
+}
+
+findS.krug <- function(x) {
+  pi * (x[1])^2
+}
+
+findS.pryamoug <- function(x) {
+  x[1] * x[2]
+}
+
+findS.triang <- function(x) {
+  0.5 * x[1] * x[2]
+}
+
+a <- structure(5, class = "krug")
+b <- structure(c(4, 6), class = "pryamoug")
+c <- structure(c(3, 4), class = "triang")
+
+cat("Круг:", findS(a), "\n")
+cat("Прямоугольник:", findS(b), "\n")
+cat("Треугольник:", findS(c), "\n")

@@ -1,0 +1,11 @@
+factorial_calc <- function(x) {
+  if (x > 0) {
+    return(x * factorial_calc(x - 1))
+  } else {
+    return(1)
+  }
+}
+
+num <- 7
+ans <- factorial_calc(num)
+cat("Результат для n =", num, ":", ans, "\n")

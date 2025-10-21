@@ -1,0 +1,25 @@
+library(purrr)
+library(repurrrsive)
+
+x <- 1:3
+
+cat("map():\n")
+print(map(x, \(n) n * 2))
+
+cat("\nmap_dbl():\n")
+print(map_dbl(x, \(n) n * 2))
+
+cat("\nmap_chr():\n")
+print(map_chr(x, \(n) paste0("Number_", n)))
+
+cat("\nmap_int():\n")
+print(map_int(x, \(n) n * 2L))
+
+cat("\nmap_lgl():\n")
+print(map_lgl(x, \(n) n > 1))
+
+cat("\nmap_dfr():\n")
+print(map_dfr(x, \(n) data.frame(number = n, square = n^2)))
+
+cat("\nwalk() - вывод квадратов чисел:\n")
+walk(x, \(n) print(n^2))

@@ -1,0 +1,27 @@
+poly_area <- function(x, y) {
+  n <- length(x)
+  sum_val <- 0
+  for (i in seq_len(n)) {
+    j <- if (i == 1) n else i - 1
+    sum_val <- sum_val + (x[j] + x[i]) * (y[j] - y[i])
+  }
+  abs(sum_val / 2)
+}
+
+main <- function() {
+  cat("Введите количество вершин:\n")
+  n <- as.integer(readline())
+  x <- numeric(n)
+  y <- numeric(n)
+  cat("Введите координаты вершин (x y):\n")
+  for (i in seq_len(n)) {
+    cat("Вершина", i, ":\n")
+    p <- as.numeric(strsplit(readline(), " ")[[1]])
+    x[i] <- p[1]
+    y[i] <- p[2]
+  }
+  area <- poly_area(x, y)
+  cat("Площадь многоугольника =", area, "\n")
+}
+
+main()

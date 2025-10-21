@@ -1,0 +1,72 @@
+library(R6)
+
+SafeBox <- R6Class(
+  "SafeBox",
+  public = list(
+    capacity = 800,
+    items = list(),
+    is_broken = FALSE,
+    
+    initialize = function(capacity = 800) {
+      stopifnot(is.numeric(capacity) && capacity > 0)
+      self$capacity <- capacity
+    },
+    
+    put_coin = function(amount, size) {
+      if (self$is_broken) {
+        cat("Сейф сломан!\n")
+        return(invisible(self))
+      }
+      used_space <- self$current_load()
+      if (used_space + size > self$capacity) {
+        cat("Недостаточно места!\n")
+        return(invisible(self))
+      }
+      self$items <- append(self$items, list(list(amount = amount, size = size)))
+      cat(sprintf("Добавлена монета %.0f руб (занимает %.0f)\n", amount, size))
+      invisible(self)
+    },
+    
+    smash = function() {
+      if (self$is_broken) {
+        cat("Сейф уже сломан!\n")
+        return(invisible(self))
+      }
+      total <- self$total_amount()
+      cat(sprintf("Сейф разбит! Внутри %.0f руб.\n", total))
+      self$is_broken <- TRUE
+      q("no", status = 0)
+    },
+    
+    info = function() {
+      filled <- self$current_load()
+      money <- self$total_amount()
+      cat(sprintf("Заполнено: %.0f/%.0f, Сумма: %.0f руб, Состояние: %s\n",
+                  filled, self$capacity, money,
+                  ifelse(self$is_broken, "разбит", "цел")))
+      invisible(self)
+    },
+    
+    current_load = function() {
+      if (length(self$items) == 0) return(0)
+      sum(vapply(self$items, function(x) x$size, numeric(1)))
+    },
+    
+    total_amount = function() {
+      if (length(self$items) == 0) return(0)
+      sum(vapply(self$items, function(x) x$amount, numeric(1)))
+    }
+  )
+)
+
+s1 <- SafeBox$new(600)
+
+s1$info()
+s1$put_coin(10, 50)$put_coin(5, 20)$put_coin(2, 15)
+s1$info()
+s1$put_coin(50, 100)$put_coin(1, 10)
+s1$info()
+s1$put_coin(100, 400)
+s1$smash()
+
+cat("Эта строка не выполнится\n")

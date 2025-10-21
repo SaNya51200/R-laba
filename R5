@@ -1,0 +1,12 @@
+named_sw_films <- set_names(sw_films, map_chr(sw_films, "title"))
+
+str(named_sw_films, max.level = 1)
+
+cat("Доступ по имени:\n")
+print(named_sw_films[["A New Hope"]]$director)
+
+cat("\nДоступ по индексу:\n")
+print(named_sw_films[[1]]$director)
+
+cat("\nНазвания фильмов:\n")
+print(names(named_sw_films))

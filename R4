@@ -1,0 +1,15 @@
+nums <- c(21, 18, 21, 19, 25, 20, 17, 17, 18, 22, 17, 18, 18, 19, 19, 27, 21, 20, 24, 17, 15, 24, 24, 29, 19, 14, 21, 17, 19, 18, 18, 20, 21, 21, 19, 17, 21, 13, 17, 13, 23, 15, 23, 24, 16, 17, 25, 24, 22)
+
+avg <- mean(nums)
+stdev <- sd(nums)
+
+filtered_nums <- nums[abs(nums - avg) < stdev]
+
+cat("Оригинальный вектор nums:\n")
+print(nums)
+cat("\nСреднее значение:", avg, "\n")
+cat("Стандартное отклонение:", stdev, "\n")
+cat("\nОтфильтрованный вектор filtered_nums:\n")
+print(filtered_nums)
+cat("\nКоличество элементов в nums:", length(nums))
+cat("\nКоличество элементов в filtered_nums:", length(filtered_nums), "\n")

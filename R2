@@ -1,0 +1,63 @@
+area_calc <- function(type, values) {
+  if (type == "квадрат") {
+    s <- values[1]
+    result <- s ^ 2
+    txt <- paste("Площадь квадрата =", s, "×", s, "=", result)
+  } else if (type == "прямоугольник") {
+    a <- values[1]
+    b <- values[2]
+    result <- a * b
+    txt <- paste("Площадь прямоугольника =", a, "×", b, "=", result)
+  } else if (type == "круг") {
+    r <- values[1]
+    result <- pi * r ^ 2
+    txt <- paste("Площадь круга = π ×", r, "² =", round(result, 2))
+  } else if (type == "треугольник") {
+    a <- values[1]
+    h <- values[2]
+    result <- 0.5 * a * h
+    txt <- paste("Площадь треугольника = 0.5 ×", a, "×", h, "=", result)
+  } else {
+    result <- NA
+    txt <- "Неизвестная фигура"
+  }
+  return(list(area = result, desc = txt))
+}
+
+shapes <- c("квадрат", "прямоугольник", "круг", "треугольник")
+tries <- 0
+
+repeat {
+  cat("Введите название фигуры:\n")
+  t <- tolower(readline())
+
+  if (t %in% shapes) {
+    if (t == "квадрат") {
+      cat("Введите сторону:\n")
+      s <- as.numeric(readline())
+      res <- area_calc(t, c(s))
+    } else if (t == "прямоугольник") {
+      cat("Введите длину и ширину через пробел:\n")
+      vals <- as.numeric(strsplit(readline(), " ")[[1]])
+      res <- area_calc(t, vals)
+    } else if (t == "круг") {
+      cat("Введите радиус:\n")
+      r <- as.numeric(readline())
+      res <- area_calc(t, c(r))
+    } else if (t == "треугольник") {
+      cat("Введите основание и высоту через пробел:\n")
+      vals <- as.numeric(strsplit(readline(), " ")[[1]])
+      res <- area_calc(t, vals)
+    }
+    cat(res$desc, "\nПлощадь:", res$area, "\n")
+    break
+  } else {
+    tries <- tries + 1
+    if (tries >= 3) {
+      cat("Слишком много ошибок. Завершение.\n")
+      break
+    } else {
+      cat("Некорректное название. Осталось попыток:", 3 - tries, "\n")
+    }
+  }
+}

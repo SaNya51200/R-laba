@@ -1,0 +1,16 @@
+library(parallel)
+
+calc_rnorm_mean <- function(sample_size) {
+  random_values <- rnorm(sample_size)
+  mean(random_values)
+}
+
+worker_cluster <- makeCluster(detectCores() - 1)
+
+clusterExport(worker_cluster, "calc_rnorm_mean")
+
+output <- parSapply(worker_cluster, rep(10000, 50), calc_rnorm_mean)
+
+stopCluster(worker_cluster)
+
+print(summary(output))

@@ -1,0 +1,50 @@
+library(R6)
+
+MicrowaveOven <- R6Class(
+  "MicrowaveOven",
+  public = list(
+    power_watts = 1000,
+    door_state = FALSE,
+    
+    initialize = function(power_watts = 1000, door_state = FALSE) {
+      stopifnot(is.numeric(power_watts) && power_watts > 0)
+      stopifnot(is.logical(door_state))
+      self$power_watts <- power_watts
+      self$door_state <- door_state
+    },
+    
+    openDoor = function() {
+      self$door_state <- TRUE
+      cat("Дверца открыта\n")
+      invisible(self)
+    },
+    
+    closeDoor = function() {
+      self$door_state <- FALSE
+      cat("Дверца закрыта\n")
+      invisible(self)
+    },
+    
+    startCooking = function() {
+      if (self$door_state) {
+        cat("Ошибка: дверь открыта!\n")
+        return(invisible(self))
+      }
+      
+      cook_time <- 60 / (self$power_watts / 1000)
+      cat("Приготовление запущено...\n")
+      Sys.sleep(1)
+      cat(sprintf("Готово! Время приготовления: %.1f сек\n", cook_time))
+      invisible(self)
+    }
+  )
+)
+
+oven1 <- MicrowaveOven$new()
+oven2 <- MicrowaveOven$new(1500, TRUE)
+
+cat("Первая печь:\n")
+oven1$closeDoor()$startCooking()
+
+cat("\nВторая печь:\n")
+oven2$startCooking()$closeDoor()$startCooking()

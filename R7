@@ -1,0 +1,46 @@
+library(janeaustenr)
+library(stringr)
+
+get_book_words <- function(book_title) {
+  book_data <- austen_books()
+  book_text <- book_data[book_data$book == book_title, "text"]
+  word_list <- str_extract_all(book_text, "\\b\\w+\\b")
+  return(tolower(unlist(word_list)))
+}
+
+get_all_austen_words <- function() {
+  all_books <- unique(as.character(austen_books()$book))
+  all_words_list <- lapply(all_books, get_book_words)
+  return(unlist(all_words_list))
+}
+
+filter_words_by_letter <- function(start_letter, word_collection, min_word_length = 1) {
+  long_words <- word_collection[nchar(word_collection) >= min_word_length]
+  matching_words <- grep(paste0("^", start_letter), long_words, value = TRUE)
+  return(matching_words)
+}
+
+find_most_frequent_word <- function(alphabet_letter, word_collection, min_word_length = 1) {
+  selected_words <- filter_words_by_letter(alphabet_letter, word_collection, min_word_length)
+  freq_table <- table(selected_words)
+  max_freq <- max(freq_table)
+  return(max_freq)
+}
+
+word_collection <- get_all_austen_words()
+
+frequency_results <- sapply(letters, function(l) {
+  find_most_frequent_word(l, word_collection, 5)
+})
+
+print(frequency_results)
+
+barplot(frequency_results,
+        main = "Статистика частотности слов",
+        xlab = "Буквы алфавита",
+        ylab = "Количество повторений",
+        col = "steelblue",
+        border = NA,
+        las = 2,
+        cex.axis = 0.8,
+        cex.names = 0.7)
